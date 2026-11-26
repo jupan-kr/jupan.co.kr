@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>사이트 소개 | 온라인 주판</title>
+<meta name="description" content="소리 나는 3D 온라인 주판 계산기 jupan.co.kr을 소개해요. 만든 이유와 기능, 이런 분께 좋아요.">
+<link rel="canonical" href="https://jupan.co.kr/about.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="온라인 주판">
+<meta property="og:title" content="사이트 소개 | 온라인 주판">
+<meta property="og:description" content="소리 나는 3D 온라인 주판 계산기 jupan.co.kr을 소개해요. 만든 이유와 기능, 이런 분께 좋아요.">
+<meta property="og:url" content="https://jupan.co.kr/about.html">
+<meta property="og:image" content="https://jupan.co.kr/og-image.png">
+<meta property="og:locale" content="ko_KR">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;600&family=Gowun+Batang:wght@700&family=Gowun+Dodum&display=swap">
+<style>
+/* Layout: single reading column, 주판 bead colour as the only accent, number tables in mono */
+:root{
+  --bg:#f4f3ef; --fg:#1f2220; --muted:#5f655f; --line:#dcdad3; --accent:#c75a1a; --card:#fbfaf7; --code:#ecebe5;
+  --f-display:"Gowun Batang",serif; --f-body:"Gowun Dodum",system-ui,sans-serif; --f-num:"Azeret Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root{--bg:#1a1b1a;--fg:#e8e8e3;--muted:#a1a69f;--line:#333633;--accent:#ee8a4c;--card:#222422;--code:#2a2c2a;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.75;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:720px;margin:0 auto}
+nav{display:flex;justify-content:space-between;align-items:center;padding-block:18px;border-bottom:1px solid var(--line);margin-bottom:28px;gap:12px;flex-wrap:wrap}
+nav a{color:var(--fg);text-decoration:none}
+.home{font-family:var(--f-display);font-size:1.1rem}
+.cta{background:var(--accent);color:#fff!important;padding:8px 16px;border-radius:8px;font-size:.95rem}
+h1{font-family:var(--f-display);font-size:clamp(1.7rem,5vw,2.3rem);line-height:1.3;margin:0 0 12px;text-wrap:balance}
+.lead{color:var(--muted);margin:0 0 32px}
+h2{font-family:var(--f-display);font-size:1.35rem;margin:44px 0 10px;padding-top:12px;border-top:1px solid var(--line);text-wrap:balance}
+h3{font-size:1.05rem;margin:24px 0 6px}
+p{margin:0 0 14px}
+ul,ol{padding-left:1.3em;margin:0 0 14px}
+li{margin-bottom:4px}
+b{color:var(--accent);font-weight:600}
+.toc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 20px}
+.toc ol{margin:0}
+.toc a{color:var(--fg)}
+.tbl{overflow-x:auto;margin:10px 0 18px}
+table{border-collapse:collapse;font-variant-numeric:tabular-nums;min-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;white-space:nowrap}
+th{font-size:.85rem;color:var(--muted);font-weight:normal}
+td.n{font-family:var(--f-num);font-weight:600}
+.ex{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:12px 0 18px}
+.ex .q{font-family:var(--f-num);font-weight:600;font-size:1.1rem;margin-bottom:6px}
+.ex ol{margin:0}
+.note{font-size:.95rem;color:var(--muted)}
+a{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+.mail{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:8px 0 20px}
+.mail code{font-family:var(--f-num);font-size:1.05rem;user-select:all}
+.mail button{font:inherit;font-size:.9rem;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer}
+.links{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8453616479908779" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <a class="home" href="/">온라인 주판</a>
+  <a class="cta" href="/">주판 계산기 열기</a>
+</nav>
+<main>
+<h1>사이트 소개</h1>
+<p class="lead">jupan.co.kr은 실제 주판처럼 알을 튕겨 계산하는 무료 온라인 주판이에요. 설치나 회원가입 없이 주소만 열면 바로 쓸 수 있어요.</p>
+<h2>만든 이유</h2>
+<p>주산 학원에서 주판알을 튕기던 "딱, 따닥" 소리를 다시 듣고 싶어서 만들었어요. 집에 주판이 없어도, 휴대폰이나 컴퓨터만 있으면 진짜 주판을 만지는 느낌으로 계산하고 연습할 수 있게 하는 것이 목표예요.</p>
+<h2>할 수 있는 것</h2>
+<ul>
+  <li><b>17자리 3D 주판</b>: 윗알 1개, 아래알 4개인 일본식 주판이에요. 요즘 학원에서 쓰는 주판과 같아요.</li>
+  <li><b>알 소리</b>: 나무, 플라스틱, 옛날 주판, 유리구슬, 금속, 뽁뽁 중에서 고를 수 있어요.</li>
+  <li><b>합계 표시</b>: 놓인 숫자가 화면 위쪽에 숫자와 글자로 바로 나와요.</li>
+  <li><b>연습문제</b>: 한 자리 덧셈부터 곱셈까지 6단계 문제를 주판으로 풀고 채점해요.</li>
+  <li><b>4개 언어</b>: 한국어, 영어, 일본어, 중국어로 쓸 수 있어요.</li>
+</ul>
+<h2>이런 분께 좋아요</h2>
+<ul>
+  <li>주산을 배우는 아이와 함께 연습하고 싶은 부모님</li>
+  <li>주판이 없는데 숙제나 연습이 필요한 학생</li>
+  <li>옛날 주판 소리가 그리운 분</li>
+</ul>
+<h2>운영</h2>
+<p>개인이 만들고 운영하는 사이트예요. 무료로 계속 쓸 수 있도록 화면 아래쪽에 광고가 들어갈 수 있어요. 불편한 점이나 바라는 기능은 <a href="/contact.html">문의하기</a>로 알려주세요.</p>
+</main>
+<footer>
+  <div class="links"><a href="/">주판 계산기</a><a href="/guide.html">사용법</a><a href="/about.html">사이트 소개</a><a href="/privacy.html">개인정보처리방침</a><a href="/contact.html">문의하기</a></div>
+  <p>© 2026 jupan.co.kr</p>
+</footer>
+</div>
+</body>
+</html>

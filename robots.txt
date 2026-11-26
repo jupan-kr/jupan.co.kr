@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jupan.co.kr/sitemap.xml

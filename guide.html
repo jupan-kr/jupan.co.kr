@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>주판 사용법 | 숫자 놓기부터 5의 보수·10의 보수까지</title>
+<meta name="description" content="주판 사용법 정리. 주판 구조, 숫자 놓기, 손가락 쓰는 법, 5의 보수·10의 보수 덧셈·뺄셈 예제.">
+<meta name="keywords" content="주판 사용법, 주산 배우기, 5의 보수, 10의 보수, 주판 덧셈, 주판 뺄셈, 주판 숫자 놓기">
+<link rel="canonical" href="https://jupan.co.kr/guide.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="온라인 주판">
+<meta property="og:title" content="주판 사용법 - 숫자 놓기부터 보수 계산까지">
+<meta property="og:description" content="주판 구조, 숫자 놓는 법, 5의 보수와 10의 보수 덧셈·뺄셈을 예제로 정리했어요.">
+<meta property="og:url" content="https://jupan.co.kr/guide.html">
+<meta property="og:image" content="https://jupan.co.kr/og-image.png">
+<meta property="og:locale" content="ko_KR">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;600&family=Gowun+Batang:wght@700&family=Gowun+Dodum&display=swap">
+<style>
+/* Layout: single reading column, 주판 bead colour as the only accent, number tables in mono */
+:root{
+  --bg:#f4f3ef; --fg:#1f2220; --muted:#5f655f; --line:#dcdad3; --accent:#c75a1a; --card:#fbfaf7; --code:#ecebe5;
+  --f-display:"Gowun Batang",serif; --f-body:"Gowun Dodum",system-ui,sans-serif; --f-num:"Azeret Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root{--bg:#1a1b1a;--fg:#e8e8e3;--muted:#a1a69f;--line:#333633;--accent:#ee8a4c;--card:#222422;--code:#2a2c2a;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.75;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:720px;margin:0 auto}
+nav{display:flex;justify-content:space-between;align-items:center;padding-block:18px;border-bottom:1px solid var(--line);margin-bottom:28px;gap:12px;flex-wrap:wrap}
+nav a{color:var(--fg);text-decoration:none}
+.home{font-family:var(--f-display);font-size:1.1rem}
+.cta{background:var(--accent);color:#fff!important;padding:8px 16px;border-radius:8px;font-size:.95rem}
+h1{font-family:var(--f-display);font-size:clamp(1.7rem,5vw,2.3rem);line-height:1.3;margin:0 0 12px;text-wrap:balance}
+.lead{color:var(--muted);margin:0 0 32px}
+h2{font-family:var(--f-display);font-size:1.35rem;margin:44px 0 10px;padding-top:12px;border-top:1px solid var(--line);text-wrap:balance}
+h3{font-size:1.05rem;margin:24px 0 6px}
+p{margin:0 0 14px}
+ul,ol{padding-left:1.3em;margin:0 0 14px}
+li{margin-bottom:4px}
+b{color:var(--accent);font-weight:600}
+.toc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 20px}
+.toc ol{margin:0}
+.toc a{color:var(--fg)}
+.tbl{overflow-x:auto;margin:10px 0 18px}
+table{border-collapse:collapse;font-variant-numeric:tabular-nums;min-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;white-space:nowrap}
+th{font-size:.85rem;color:var(--muted);font-weight:normal}
+td.n{font-family:var(--f-num);font-weight:600}
+.ex{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:12px 0 18px}
+.ex .q{font-family:var(--f-num);font-weight:600;font-size:1.1rem;margin-bottom:6px}
+.ex ol{margin:0}
+.note{font-size:.95rem;color:var(--muted)}
+a{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+.mail{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:8px 0 20px}
+.mail code{font-family:var(--f-num);font-size:1.05rem;user-select:all}
+.mail button{font:inherit;font-size:.9rem;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer}
+.links{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8453616479908779" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <a class="home" href="/">온라인 주판</a>
+  <a class="cta" href="/">주판 계산기 열기</a>
+</nav>
+
+<main>
+<h1>주판 사용법</h1>
+<p class="lead">요즘 학원과 학교에서 쓰는 일본식 주판(윗알 1개, 아래알 4개)을 기준으로, 숫자 놓는 법부터 5의 보수와 10의 보수를 쓰는 덧셈·뺄셈까지 차례로 정리했어요. 읽으면서 <a href="/">온라인 주판</a>으로 직접 따라 해 보세요.</p>
+
+<div class="toc">
+  <ol>
+    <li><a href="#parts">주판의 구조</a></li>
+    <li><a href="#digits">0부터 9까지 숫자 놓기</a></li>
+    <li><a href="#fingers">손가락 쓰는 법</a></li>
+    <li><a href="#add">덧셈: 그냥 더하기, 5의 보수, 10의 보수</a></li>
+    <li><a href="#sub">뺄셈: 그냥 빼기, 5의 보수, 10의 보수</a></li>
+    <li><a href="#site">이 온라인 주판 쓰는 법</a></li>
+  </ol>
+</div>
+
+<h2 id="parts">1. 주판의 구조</h2>
+<ul>
+  <li><b>주판틀</b>: 바깥을 감싸는 테두리예요.</li>
+  <li><b>가름대</b>: 가로로 길게 지나는 막대예요. 알은 가름대 쪽으로 붙어야 숫자로 셉니다.</li>
+  <li><b>윗알</b>: 가름대 위쪽 알 1개. 가름대에 붙으면 <b>5</b>예요.</li>
+  <li><b>아래알</b>: 가름대 아래쪽 알 4개. 가름대에 붙은 개수만큼 <b>1씩</b> 셉니다.</li>
+  <li><b>뀀대(살)</b>: 알을 꿰는 세로 막대예요. 막대 하나가 숫자 한 자리입니다.</li>
+  <li><b>자릿점</b>: 가름대 위에 찍힌 점이에요. 세 자리마다 있어서 천, 백만 같은 단위를 쉽게 찾게 해 줘요.</li>
+</ul>
+<p>계산을 시작하기 전에는 모든 알을 가름대에서 떼어 놓아요. 이것을 <b>알 털기</b>라고 하고, 이때 주판은 0을 나타냅니다.</p>
+
+<h2 id="digits">2. 0부터 9까지 숫자 놓기</h2>
+<p>한 자리 숫자는 <b>윗알(5)</b>과 <b>아래알(1×개수)</b>을 더한 값이에요.</p>
+<div class="tbl"><table>
+  <thead><tr><th>숫자</th><th>윗알</th><th>아래알</th><th>읽는 법</th></tr></thead>
+  <tbody>
+    <tr><td class="n">0</td><td>떨어짐</td><td>0개</td><td>아무것도 붙지 않음</td></tr>
+    <tr><td class="n">1</td><td>떨어짐</td><td>1개</td><td>1</td></tr>
+    <tr><td class="n">2</td><td>떨어짐</td><td>2개</td><td>1+1</td></tr>
+    <tr><td class="n">3</td><td>떨어짐</td><td>3개</td><td>1+1+1</td></tr>
+    <tr><td class="n">4</td><td>떨어짐</td><td>4개</td><td>1+1+1+1</td></tr>
+    <tr><td class="n">5</td><td>붙음</td><td>0개</td><td>5</td></tr>
+    <tr><td class="n">6</td><td>붙음</td><td>1개</td><td>5+1</td></tr>
+    <tr><td class="n">7</td><td>붙음</td><td>2개</td><td>5+2</td></tr>
+    <tr><td class="n">8</td><td>붙음</td><td>3개</td><td>5+3</td></tr>
+    <tr><td class="n">9</td><td>붙음</td><td>4개</td><td>5+4</td></tr>
+  </tbody>
+</table></div>
+<p>여러 자리 숫자는 일의 자리를 정한 뒤 왼쪽으로 십, 백, 천 자리를 차례로 놓아요. 예를 들어 <b>3,052</b>는 일의 자리에 2, 십의 자리에 5, 백의 자리에 0, 천의 자리에 3을 놓습니다.</p>
+
+<h2 id="fingers">3. 손가락 쓰는 법</h2>
+<ul>
+  <li><b>엄지</b>: 아래알을 가름대 쪽으로 <b>올릴 때</b> 써요.</li>
+  <li><b>검지</b>: 아래알을 <b>내릴 때</b>, 그리고 윗알을 올리고 내릴 때 써요.</li>
+  <li>윗알과 아래알을 동시에 움직일 때(예: 6, 7, 8, 9 놓기)는 엄지와 검지로 집듯이 한 번에 움직여요.</li>
+</ul>
+<p class="note">처음에는 손가락 순서가 어색해도, 정확한 손 모양을 익혀 두면 속도가 크게 빨라져요.</p>
+
+<h2 id="add">4. 덧셈</h2>
+<h3>그냥 더하기</h3>
+<p>더할 수만큼 알이 남아 있으면 그대로 붙이면 돼요.</p>
+<div class="ex"><div class="q">2 + 1 = 3</div>
+<ol><li>아래알 2개를 붙여 2를 놓아요.</li><li>아래알 1개를 더 붙여요. 아래알 3개, 답은 3.</li></ol></div>
+
+<h3>5의 보수로 더하기</h3>
+<p>아래알이 모자랄 때 써요. 두 수를 더해 5가 되는 짝을 <b>5의 보수</b>라고 해요. (1↔4, 2↔3)</p>
+<p>규칙: <b>□를 더하려면 → 윗알 5를 붙이고, □의 5의 보수만큼 아래알을 뺀다</b></p>
+<div class="ex"><div class="q">4 + 3 = 7</div>
+<ol><li>4를 놓아요. 아래알 4개가 모두 붙어 있어서 3을 더 붙일 수 없어요.</li><li>3의 5의 보수는 2예요. 윗알(5)을 붙이고 아래알 2개를 떼요.</li><li>윗알 + 아래알 2개, 답은 7.</li></ol></div>
+
+<h3>10의 보수로 더하기</h3>
+<p>그 자리에 더 놓을 공간이 없을 때 써요. 두 수를 더해 10이 되는 짝을 <b>10의 보수</b>라고 해요. (1↔9, 2↔8, 3↔7, 4↔6, 5↔5)</p>
+<p>규칙: <b>□를 더하려면 → 그 자리에서 □의 10의 보수를 빼고, 바로 왼쪽 자리에 1을 더한다</b></p>
+<div class="ex"><div class="q">8 + 7 = 15</div>
+<ol><li>일의 자리에 8을 놓아요(윗알 + 아래알 3개).</li><li>7의 10의 보수는 3이에요. 일의 자리에서 3을 빼면 5가 남아요(아래알 3개를 뗌).</li><li>십의 자리에 1을 붙여요. 답은 15.</li></ol></div>
+
+<h2 id="sub">5. 뺄셈</h2>
+<h3>그냥 빼기</h3>
+<div class="ex"><div class="q">8 − 2 = 6</div>
+<ol><li>8을 놓아요(윗알 + 아래알 3개).</li><li>아래알 2개를 떼요. 윗알 + 아래알 1개, 답은 6.</li></ol></div>
+
+<h3>5의 보수로 빼기</h3>
+<p>규칙: <b>□를 빼려면 → 윗알 5를 떼고, □의 5의 보수만큼 아래알을 붙인다</b></p>
+<div class="ex"><div class="q">7 − 3 = 4</div>
+<ol><li>7을 놓아요(윗알 + 아래알 2개). 아래알이 2개뿐이라 3을 바로 뗄 수 없어요.</li><li>3의 5의 보수는 2예요. 윗알을 떼고 아래알 2개를 붙여요.</li><li>아래알 4개, 답은 4.</li></ol></div>
+
+<h3>10의 보수로 빼기</h3>
+<p>규칙: <b>□를 빼려면 → 바로 왼쪽 자리에서 1을 빼고, 그 자리에 □의 10의 보수를 더한다</b></p>
+<div class="ex"><div class="q">12 − 5 = 7</div>
+<ol><li>12를 놓아요. 일의 자리는 2라서 5를 뺄 수 없어요.</li><li>십의 자리에서 1을 떼요.</li><li>5의 10의 보수는 5예요. 일의 자리에 5를 더하면 7. 답은 7.</li></ol></div>
+
+<h2 id="site">6. 이 온라인 주판 쓰는 법</h2>
+<ul>
+  <li><b>알 움직이기</b>: 알을 누르면 가름대 쪽으로 붙거나 떨어져요. 위·아래로 밀어서 움직여도 돼요.</li>
+  <li><b>여러 알 한 번에</b>: 아래알 중 가장 바깥 알을 누르면 그 위의 알까지 같이 움직여요. 실제 주판과 같아요.</li>
+  <li><b>합계</b>: 화면 위쪽에 숫자와 한글로 나와요. 17자리라 '경' 단위까지 읽어 줘요.</li>
+  <li><b>알 털기</b>: 모든 알을 0으로 돌려요.</li>
+  <li><b>소리</b>: 나무, 플라스틱, 옛날 주판, 유리구슬, 금속, 뽁뽁 중에서 고르거나 끌 수 있어요.</li>
+  <li><b>연습</b>: 위쪽 <b>연습</b> 버튼을 누르면 문제가 나와요. 주판에 답을 놓고 <b>채점</b>을 눌러요. 1단계 한 자리 덧셈부터 6단계 곱셈까지 고를 수 있어요. 연습 중에는 합계가 숨겨지고, <b>합계 보기</b>로 볼 수 있어요.</li>
+  <li><b>언어</b>: 한국어, 영어, 일본어, 중국어로 바꿀 수 있어요.</li>
+  <li><b>휴대폰</b>: 세로로 들어도 화면이 가로로 돌아가요. 폰을 옆으로 눕혀서 쓰면 알이 커져서 누르기 편해요.</li>
+  <li><b>일의 자리</b>: 이 주판에서는 가장 오른쪽 막대가 일의 자리예요.</li>
+</ul>
+</main>
+
+<footer>
+  <div class="links"><a href="/">주판 계산기</a><a href="/guide.html">사용법</a><a href="/about.html">사이트 소개</a><a href="/privacy.html">개인정보처리방침</a><a href="/contact.html">문의하기</a></div>
+  <p>© 2026 jupan.co.kr</p>
+</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>온라인 주판 계산기 | 소리 나는 3D 주판</title>
+<meta name="description" content="실제 주판처럼 알을 튕겨 계산하는 무료 온라인 주판 계산기. 17자리 3D 주판, 알 소리, 합계 자동 표시.">
+<meta name="keywords" content="주판, 주판 계산기, 온라인 주판, 주산, 주산 연습, 주판 사용법, 소로반">
+<link rel="canonical" href="https://jupan.co.kr/">
+<meta name="robots" content="index,follow">
+
+<!-- 네이버 서치어드바이저 소유확인: 네이버가 준 meta 태그를 아래 줄에 붙여 넣으세요 -->
+<meta name="naver-site-verification" content="d0414485f6c3692268fb7237529cff8740a510d6" />
+<!-- 구글 서치콘솔 소유확인: 구글이 준 meta 태그를 아래 줄에 붙여 넣으세요 -->
+<meta name="google-site-verification" content="wgz3opY1Byu9O_1txXA-2NFjwyn5SpbQHqG01aasoZs" />
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="온라인 주판">
+<meta property="og:title" content="온라인 주판 계산기 - 소리 나는 3D 주판">
+<meta property="og:description" content="실제 주판처럼 알을 튕겨 계산하는 무료 온라인 주판. 17자리, 알 소리, 합계 자동 표시.">
+<meta property="og:url" content="https://jupan.co.kr/">
+<meta property="og:image" content="https://jupan.co.kr/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"온라인 주판 계산기","url":"https://jupan.co.kr/","applicationCategory":"EducationalApplication","operatingSystem":"웹 브라우저","inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"실제 주판처럼 알을 튕겨 계산하는 무료 17자리 3D 온라인 주판"}
+</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;600&family=Gowun+Dodum&display=swap">
+<style>
+/* Layout: full-screen landscape tool — slim readout bar on top, optional practice bar, 3D soroban fills the rest. Portrait phones get the app rotated 90° */
+:root{
+  --bg:#e6e4de; --bar:#1b1c1e; --bar2:#26282b; --bar-ink:#eef0e6; --bar-dim:#8a9085; --chip:#2c2e31; --chip-on:#d9864a; --ink:#1f2420;
+  --ok:#5fbf7a; --bad:#e2775e;
+  --f-body:"Gowun Dodum",system-ui,sans-serif; --f-num:"Azeret Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){ --bg:#2a2a2b; --ink:#e6e6e2; color-scheme:dark }}
+:root[data-theme="dark"]{ --bg:#2a2a2b; --ink:#e6e6e2; color-scheme:dark }
+html,body{height:100%;overflow:hidden;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body)}
+[hidden]{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.app{position:fixed;top:0;left:0;display:flex;flex-direction:column;background:var(--bg);transform-origin:0 0;overflow:hidden}
+.topbar,.practicebar{display:flex;align-items:center;gap:12px;color:var(--bar-ink);
+  padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px))}
+.topbar{background:var(--bar);padding-block:8px}
+.practicebar{background:var(--bar2);padding-block:8px;flex-wrap:wrap;row-gap:6px}
+.sum{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.value{font-family:var(--f-num);font-weight:600;font-variant-numeric:tabular-nums;font-size:clamp(1.2rem,4vmin,2.1rem);
+  line-height:1.1;white-space:nowrap;overflow-x:auto;max-width:100%}
+.words{font-size:.8rem;color:var(--bar-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.label{font-family:var(--f-num);font-size:.7rem;letter-spacing:.14em;color:var(--bar-dim);align-self:flex-start;padding-top:4px}
+.tools{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.seg{display:flex;background:var(--chip);border-radius:8px;padding:3px;flex-shrink:0}
+.seg button{background:transparent;border:0;color:var(--bar-dim);font:inherit;font-size:.88rem;padding:6px 11px;border-radius:6px;cursor:pointer;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--chip-on);color:#fff}
+select{background:var(--chip);color:var(--bar-ink);border:1px solid #3a3d41;border-radius:8px;font:inherit;font-size:.85rem;padding:6px 8px;cursor:pointer;max-width:9.5em}
+.btn{background:#f1efe9;color:#1b1c1e;border:0;border-radius:8px;font:inherit;font-size:.88rem;padding:7px 12px;cursor:pointer;white-space:nowrap}
+.btn.ghost{background:transparent;color:var(--bar-ink);border:1px solid #3a3d41}
+.btn.go{background:var(--chip-on);color:#fff}
+.guide{color:var(--bar-ink);text-decoration:none;font-size:.88rem;padding:7px 10px;border:1px solid #3a3d41;border-radius:8px;white-space:nowrap}
+.guide:hover,.btn.ghost:hover{background:#2c2e31}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--chip-on);outline-offset:2px}
+.problem{font-family:var(--f-num);font-weight:600;font-size:clamp(1.15rem,3.6vmin,1.8rem);font-variant-numeric:tabular-nums;white-space:nowrap}
+.problem .q{color:var(--chip-on)}
+.feedback{font-size:.95rem;min-width:7em}
+.feedback.ok{color:var(--ok)} .feedback.bad{color:var(--bad)}
+.score{font-family:var(--f-num);font-size:.8rem;color:var(--bar-dim);white-space:nowrap}
+.spacer{flex:1}
+.shake{animation:shake .35s}
+@keyframes shake{20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+@media (prefers-reduced-motion: reduce){.shake{animation:none}}
+.stage{position:relative;flex:1;min-height:0}
+canvas{display:block;width:100%;height:100%;touch-action:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--ink);opacity:.6;pointer-events:none}
+/* 광고 띠: 화면 맨 아래에 고정. 세로로 든 폰에서도 광고는 돌리지 않고 바로 세워서 보여줌 */
+.sitelinks{position:absolute;right:12px;bottom:6px;display:flex;gap:12px;font-size:.75rem;z-index:2}
+.sitelinks a{color:var(--ink);opacity:.55;text-decoration:none}
+.sitelinks a:hover{opacity:.9;text-decoration:underline}
+.adbar{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;background:var(--bg);
+  padding-top:4px;padding-bottom:calc(4px + env(safe-area-inset-bottom,0px));overflow:hidden;z-index:5}
+.adslot{width:320px;height:50px;max-width:100%;display:flex;align-items:center;justify-content:center}
+.adbar.wide .adslot{width:728px;height:90px}
+.adtest{width:100%;height:100%;border:1px dashed #9a958a;color:#7d786e;font-size:.8rem;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.03)}
+.feedback:empty{display:none}
+@media (max-width:880px){ .label{display:none} .topbar,.practicebar{gap:7px} select{max-width:7.5em;font-size:.8rem;padding:5px 6px}
+  .btn,.guide{font-size:.8rem;padding:6px 9px} .seg button{font-size:.8rem;padding:5px 9px} .feedback{min-width:0;font-size:.85rem} }
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8453616479908779" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="app" id="app">
+  <div class="topbar">
+    <h1 class="sr-only" data-i18n="h1">온라인 주판 계산기</h1>
+    <div class="seg" role="group" id="modeSeg" data-i18n-aria="modeAria" aria-label="모드">
+      <button id="mode-calc" aria-pressed="true" data-i18n="calc">계산기</button>
+      <button id="mode-practice" aria-pressed="false" data-i18n="practice">연습</button>
+    </div>
+    <span class="label" data-i18n="sum">합계</span>
+    <div class="sum" aria-live="polite">
+      <div class="value" id="value">0</div>
+      <div class="words" id="words">영</div>
+    </div>
+    <div class="tools">
+      <label class="sr-only" for="sound" data-i18n="soundAria">알 소리</label>
+      <select id="sound"></select>
+      <label class="sr-only" for="lang" data-i18n="langAria">언어</label>
+      <select id="lang">
+        <option value="ko">한국어</option>
+        <option value="en">English</option>
+        <option value="ja">日本語</option>
+        <option value="zh">中文</option>
+      </select>
+      <button class="btn" id="clear" data-i18n="clear">알 털기</button>
+      <a class="guide" id="guide" href="/guide.html" data-i18n="guide">사용법</a>
+    </div>
+  </div>
+
+  <div class="practicebar" id="practicebar" hidden>
+    <label class="sr-only" for="level" data-i18n="levelAria">난이도</label>
+    <select id="level"></select>
+    <div class="problem" id="problem" aria-live="polite"></div>
+    <div class="feedback" id="feedback" aria-live="assertive"></div>
+    <span class="spacer"></span>
+    <span class="score" id="score"></span>
+    <button class="btn ghost" id="peek" aria-pressed="false" data-i18n="peek">합계 보기</button>
+    <button class="btn ghost" id="reveal" data-i18n="reveal">정답 보기</button>
+    <button class="btn ghost" id="next" data-i18n="next">다음 문제</button>
+    <button class="btn go" id="check" data-i18n="check">채점</button>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="loading" id="loading" data-i18n="loading">주판 불러오는 중…</div>
+    <nav class="sitelinks" aria-label="사이트 정보">
+      <a href="/about.html" data-i18n="about">사이트 소개</a>
+      <a href="/privacy.html" data-i18n="privacy">개인정보처리방침</a>
+      <a href="/contact.html" data-i18n="contact">문의하기</a>
+    </nav>
+    <canvas id="cv" data-i18n-aria="canvasAria" aria-label="17자리 주판. 알을 눌러 숫자를 놓습니다."></canvas>
+  </div>
+</div>
+
+<div class="adbar" id="adbar" hidden>
+  <div class="adslot" id="adslot">
+    <!-- 광고 코드 자리: 카카오 애드핏 또는 구글 애드센스 승인 후 받은 코드를 여기에 넣고, 위 adbar의 hidden을 지우면 광고가 보여요 -->
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(()=>{
+/* ================= 글자(언어별) ================= */
+const STR={
+ ko:{about:'사이트 소개',privacy:'개인정보처리방침',contact:'문의하기',h1:'온라인 주판 계산기',modeAria:'모드',calc:'계산기',practice:'연습',sum:'합계',soundAria:'알 소리',langAria:'언어',clear:'알 털기',guide:'사용법',
+   levelAria:'난이도',peek:'합계 보기',peekHide:'합계 숨기기',reveal:'정답 보기',next:'다음 문제',check:'채점',loading:'주판 불러오는 중…',
+   canvasAria:'17자리 주판. 알을 눌러 숫자를 놓습니다.',
+   snd:{wood:'나무',plastic:'플라스틱',bigwood:'옛날 주판',glass:'유리구슬',metal:'금속',cute:'뽁뽁',off:'소리 끔'},
+   levels:['1단계 · 한 자리 덧셈','2단계 · 한 자리 덧셈·뺄셈','3단계 · 두 자리 덧셈','4단계 · 두 자리 세 수','5단계 · 세 자리 세 수','6단계 · 곱셈 (두 자리 × 한 자리)'],
+   hidden:'주판에 답을 놓아 보세요',ok:'정답이에요!',bad:'아직 아니에요. 다시 해보세요',answerIs:'정답은 {n}',score:'맞힘 {c} / {t}'},
+ en:{about:'About',privacy:'Privacy',contact:'Contact',h1:'Online Abacus Calculator',modeAria:'Mode',calc:'Calculator',practice:'Practice',sum:'TOTAL',soundAria:'Bead sound',langAria:'Language',clear:'Clear',guide:'Guide',
+   levelAria:'Level',peek:'Show total',peekHide:'Hide total',reveal:'Show answer',next:'Next',check:'Check',loading:'Loading abacus…',
+   canvasAria:'17-rod abacus. Tap beads to set numbers.',
+   snd:{wood:'Wood',plastic:'Plastic',bigwood:'Antique',glass:'Glass',metal:'Metal',cute:'Pop',off:'Sound off'},
+   levels:['Level 1 · 1-digit addition','Level 2 · 1-digit add & subtract','Level 3 · 2-digit addition','Level 4 · 2-digit, three numbers','Level 5 · 3-digit, three numbers','Level 6 · Multiplication (2-digit × 1-digit)'],
+   hidden:'Set your answer on the abacus',ok:'Correct!',bad:'Not yet. Try again',answerIs:'The answer is {n}',score:'{c} / {t} correct'},
+ ja:{about:'サイト紹介',privacy:'プライバシー',contact:'お問い合わせ',h1:'オンラインそろばん電卓',modeAria:'モード',calc:'計算',practice:'練習',sum:'合計',soundAria:'珠の音',langAria:'言語',clear:'ご破算',guide:'使い方',
+   levelAria:'レベル',peek:'合計を表示',peekHide:'合計を隠す',reveal:'答えを見る',next:'次の問題',check:'答え合わせ',loading:'そろばんを読み込み中…',
+   canvasAria:'17桁のそろばん。珠をタップして数を置きます。',
+   snd:{wood:'木',plastic:'プラスチック',bigwood:'昔のそろばん',glass:'ガラス玉',metal:'金属',cute:'ポン',off:'音なし'},
+   levels:['1級 · 1桁のたし算','2級 · 1桁のたし算・ひき算','3級 · 2桁のたし算','4級 · 2桁の3口','5級 · 3桁の3口','6級 · かけ算 (2桁×1桁)'],
+   hidden:'そろばんに答えを置いてください',ok:'正解です！',bad:'ちがいます。もう一度',answerIs:'答えは {n}',score:'正解 {c} / {t}'},
+ zh:{about:'关于本站',privacy:'隐私政策',contact:'联系我们',h1:'在线算盘计算器',modeAria:'模式',calc:'计算器',practice:'练习',sum:'合计',soundAria:'珠子声音',langAria:'语言',clear:'清盘',guide:'使用方法',
+   levelAria:'难度',peek:'显示合计',peekHide:'隐藏合计',reveal:'查看答案',next:'下一题',check:'判断对错',loading:'正在加载算盘…',
+   canvasAria:'17档算盘。点击珠子来拨数。',
+   snd:{wood:'木头',plastic:'塑料',bigwood:'老式算盘',glass:'玻璃珠',metal:'金属',cute:'啵啵',off:'静音'},
+   levels:['第1级 · 一位数加法','第2级 · 一位数加减','第3级 · 两位数加法','第4级 · 两位数三个数','第5级 · 三位数三个数','第6级 · 乘法（两位数×一位数）'],
+   hidden:'请在算盘上拨出答案',ok:'答对了！',bad:'不对，再试一次',answerIs:'答案是 {n}',score:'答对 {c} / {t}'}
+};
+// 일본어 레벨은 실제 검정 급수와 다르므로 '단계' 의미로 표기
+STR.ja.levels=['ステップ1 · 1桁のたし算','ステップ2 · 1桁のたし算・ひき算','ステップ3 · 2桁のたし算','ステップ4 · 2桁の3口','ステップ5 · 3桁の3口','ステップ6 · かけ算 (2桁×1桁)'];
+const LOCALE={ko:'ko-KR',en:'en-US',ja:'ja-JP',zh:'zh-CN'};
+const SOUNDS=['wood','plastic','bigwood','glass','metal','cute','off'];
+const store={get(k){try{return localStorage.getItem(k)}catch(_){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(_){}}};
+
+const qsLang=new URLSearchParams(location.search).get('lang');
+let lang=(qsLang&&STR[qsLang])?qsLang:(STR[store.get('jupan.lang')]?store.get('jupan.lang'):'ko');
+let sound=SOUNDS.includes(store.get('jupan.sound'))?store.get('jupan.sound'):'wood';
+const T=k=>STR[lang][k];
+const fmt=(s,o)=>s.replace(/\{(\w+)\}/g,(_,k)=>o[k]);
+
+/* ================= 주판 상태 ================= */
+const RODS=17;
+const heaven=new Array(RODS).fill(false), earth=new Array(RODS).fill(0);
+const hPos=new Array(RODS).fill(0), hAnim=new Array(RODS).fill(null);
+const ePos=Array.from({length:RODS},()=>[0,0,0,0]), eAnim=Array.from({length:RODS},()=>[null,null,null,null]);
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const DUR=reduce?0:75;
+
+const $=id=>document.getElementById(id);
+const app=$('app'), stage=$('stage'), cv=$('cv');
+const valueEl=$('value'), wordsEl=$('words');
+const coarse=matchMedia('(pointer: coarse)').matches;
+let rotated=false;
+
+const adbar=$('adbar');
+if(new URLSearchParams(location.search).has('adtest')){ $('adslot').innerHTML='<div class="adtest">광고 자리</div>'; adbar.hidden=false; }
+function fitApp(){
+  const W=innerWidth;
+  rotated = coarse && innerHeight>W;
+  // 넓은 PC 화면은 728×90, 그 밖은 320×50
+  adbar.classList.toggle('wide', !rotated && W>=768 && innerHeight>=560);
+  const H=innerHeight-(adbar.hidden?0:adbar.offsetHeight);
+  if(rotated){ app.style.width=H+'px'; app.style.height=W+'px'; app.style.transform=`translateX(${W}px) rotate(90deg)`; }
+  else{ app.style.width=W+'px'; app.style.height=H+'px'; app.style.transform=''; }
+}
+function toApp(cx,cy){ return rotated ? {x:cy, y:innerWidth-cx} : {x:cx, y:cy}; }
+
+/* ================= 3D 장면 ================= */
+const P=1, R=P*0.47, BH=0.64, BAR=0.3, F=0.42;
+const innerW=RODS*P;
+const yTop=BAR/2+BH*1.9, yBot=-BAR/2-BH*5.0;
+const totalW=innerW+F*2, totalH=(yTop-yBot)+F*2, cy=(yTop+yBot)/2;
+
+const renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputEncoding=THREE.sRGBEncoding; renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.05;
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(26,1,0.1,200);
+
+scene.add(new THREE.HemisphereLight(0xfff6ea,0x4a4038,0.75));
+const key=new THREE.DirectionalLight(0xffffff,1.15);
+key.position.set(-6,9,14); key.castShadow=true;
+key.shadow.mapSize.set(2048,1024);
+const sc=key.shadow.camera; sc.left=-totalW/2-1; sc.right=totalW/2+1; sc.top=yTop+2; sc.bottom=yBot-2; sc.near=1; sc.far=40;
+key.shadow.bias=-0.0006; key.shadow.radius=4;
+scene.add(key);
+const fill=new THREE.DirectionalLight(0xffe8d0,0.35); fill.position.set(8,-4,10); scene.add(fill);
+
+const matFrame=new THREE.MeshStandardMaterial({color:0x17171a,roughness:0.62,metalness:0.05});
+const matBack=new THREE.MeshStandardMaterial({color:0xf1efea,roughness:0.95});
+const matRod=new THREE.MeshStandardMaterial({color:0xe6cc9c,roughness:0.55});
+const matSilver=new THREE.MeshStandardMaterial({color:0xe4e7ec,roughness:0.28,metalness:0.35});
+const matDot=new THREE.MeshStandardMaterial({color:0x1a1a1a,roughness:0.5});
+const matBead=new THREE.MeshPhysicalMaterial({color:0xc75a1a,roughness:0.42,clearcoat:0.35,clearcoatRoughness:0.35});
+
+const zBack=-R-0.12, depth=R*2+0.34;
+const back=new THREE.Mesh(new THREE.PlaneGeometry(totalW,totalH),matBack);
+back.position.set(0,cy,zBack); back.receiveShadow=true; scene.add(back);
+function box(w,h,d,x,y,z,m){const g=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m); g.position.set(x,y,z); g.castShadow=true; g.receiveShadow=true; scene.add(g); return g;}
+const zf=zBack+depth/2;
+box(totalW,F,depth,0,yTop+F/2,zf,matFrame);
+box(totalW,F,depth,0,yBot-F/2,zf,matFrame);
+box(F,totalH,depth,-totalW/2+F/2,cy,zf,matFrame);
+box(F,totalH,depth,totalW/2-F/2,cy,zf,matFrame);
+const beamD=R*1.1;
+box(innerW,BAR,beamD,0,0,0,matFrame);
+box(innerW,BAR*0.55,0.02,0,0,beamD/2+0.01,matSilver);
+const rodX=r=>-innerW/2+P*(r+0.5);
+for(let r=0;r<RODS;r++){
+  if((RODS-1-r)%3===0){
+    const d=new THREE.Mesh(new THREE.CircleGeometry(BAR*0.13,20),matDot);
+    d.position.set(rodX(r),0,beamD/2+0.025); scene.add(d);
+  }
+}
+const rodGeo=new THREE.CylinderGeometry(0.06,0.06,yTop-yBot,12);
+for(let r=0;r<RODS;r++){const m=new THREE.Mesh(rodGeo,matRod); m.position.set(rodX(r),cy,0); m.castShadow=true; m.receiveShadow=true; scene.add(m);}
+const hh=BH/2-0.01, band=hh*0.14, hole=0.075, pts=[];
+pts.push(new THREE.Vector2(hole,-hh));
+for(let i=1;i<=8;i++){const t=i/8; const r=hole+(R-hole)*Math.pow(t,0.82); pts.push(new THREE.Vector2(r,-hh+(hh-band)*t));}
+pts.push(new THREE.Vector2(R,band));
+for(let i=1;i<=8;i++){const t=i/8; const r=R-(R-hole)*Math.pow(t,1/0.82); pts.push(new THREE.Vector2(r,band+(hh-band)*t));}
+const beadGeo=new THREE.LatheGeometry(pts,40);
+const beads={h:[],e:[]};
+for(let r=0;r<RODS;r++){
+  const m=new THREE.Mesh(beadGeo,matBead); m.castShadow=true; m.receiveShadow=true; m.userData={r,type:'h'}; scene.add(m); beads.h.push(m);
+  const col=[];
+  for(let k=0;k<4;k++){const b=new THREE.Mesh(beadGeo,matBead); b.castShadow=true; b.receiveShadow=true; b.userData={r,type:'e',k}; scene.add(b); col.push(b);}
+  beads.e.push(col);
+}
+const pickables=[...beads.h,...beads.e.flat()];
+const heavenY=r=>{const off=yTop-BH/2, on=BAR/2+BH/2; return off+(on-off)*hPos[r];};
+const earthY=(r,k)=>{const on=-BAR/2-BH/2-k*BH, off=yBot+(3-k)*BH+BH/2; return off+(on-off)*ePos[r][k];};
+function placeBeads(){
+  for(let r=0;r<RODS;r++){
+    beads.h[r].position.set(rodX(r),heavenY(r),0);
+    for(let k=0;k<4;k++) beads.e[r][k].position.set(rodX(r),earthY(r,k),0);
+  }
+}
+function resize(){
+  fitApp();
+  const w=stage.clientWidth, h=stage.clientHeight; if(!w||!h) return;
+  renderer.setSize(w,h,false);
+  camera.aspect=w/h;
+  const t=Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
+  const dist=Math.max((totalH*1.06/2)/t,(totalW*1.03/2)/(t*camera.aspect));
+  const tilt=THREE.MathUtils.degToRad(11);
+  camera.position.set(0,cy-dist*Math.sin(tilt),dist*Math.cos(tilt));
+  camera.lookAt(0,cy-0.15,0);
+  camera.updateProjectionMatrix();
+  render();
+}
+function render(){ placeBeads(); renderer.render(scene,camera); }
+
+/* ================= 움직임 ================= */
+const easeIn=p=>p*p*(1.6-0.6*p); // 0에서 출발해 정확히 1에서 멈춤
+let raf=0;
+function tick(now){
+  let moving=false;
+  for(let r=0;r<RODS;r++){
+    const a=hAnim[r];
+    if(a){const p=DUR?Math.min(1,(now-a.t0)/DUR):1; hPos[r]=p>=1?a.to:a.from+(a.to-a.from)*easeIn(p); if(p>=1)hAnim[r]=null; else moving=true;}
+    for(let k=0;k<4;k++){const b=eAnim[r][k];
+      if(b){const p=DUR?Math.min(1,(now-b.t0)/DUR):1; ePos[r][k]=p>=1?b.to:b.from+(b.to-b.from)*easeIn(p); if(p>=1)eAnim[r][k]=null; else moving=true;}}
+  }
+  render();
+  raf=moving?requestAnimationFrame(tick):0;
+}
+function animate(){ if(!raf) raf=requestAnimationFrame(tick); }
+function syncTargets(r){
+  const now=performance.now();
+  const ht=heaven[r]?1:0; if(hPos[r]!==ht) hAnim[r]={from:hPos[r],to:ht,t0:now};
+  for(let k=0;k<4;k++){const t=k<earth[r]?1:0; if(ePos[r][k]!==t) eAnim[r][k]={from:ePos[r][k],to:t,t0:now};}
+}
+
+/* ================= 소리 =================
+   모두 실제 녹음 없이 합성한 소리
+   wood 나무 · plastic 플라스틱 · bigwood 옛날 큰 나무 주판 · glass 유리구슬 · metal 금속 · cute 뽁 효과음 */
+let actx=null, master=null;
+const bufs={};
+function audio(){
+  if(!actx){
+    try{actx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});}catch(e){return null;}
+    master=actx.createDynamicsCompressor(); master.threshold.value=-12; master.ratio.value=4;
+    const out=actx.createGain(); out.gain.value=0.9; master.connect(out).connect(actx.destination);
+  }
+  if(actx.state==='suspended') actx.resume();
+  return actx;
+}
+const rnd=(lo,hi)=>lo+Math.random()*(hi-lo);
+function profileFor(p,kind){
+  const bar=kind==='bar';
+  switch(p){
+    case 'wood':{const s=bar?0.82:1; return {len:.14,
+      modes:[[rnd(780,920)*s,1,rnd(.022,.032)],[rnd(1450,1700)*s,.55,rnd(.012,.018)],[rnd(2450,2850)*s,.3,rnd(.006,.009)],[rnd(3900,4400)*s,.12,rnd(.003,.005)]],
+      noise:.45,noiseTau:.0018,thump:bar?1.4:.9,thumpTau:.012};}
+    case 'plastic':{const s=bar?0.75:1; return {len:.14,
+      modes:[[rnd(2300,2700)*s,.9,rnd(.006,.009)],[rnd(3900,4500)*s,.6,rnd(.004,.006)],[rnd(5800,6600)*s,.35,rnd(.003,.004)],[rnd(1400,1700)*s,.35,rnd(.010,.014)]],
+      noise:.9,noiseTau:.0012,thump:bar?1.6:.8,thumpTau:.004};}
+    case 'bigwood':{const s=bar?0.8:1; return {len:.22,
+      modes:[[rnd(420,500)*s,1,rnd(.04,.055)],[rnd(900,1050)*s,.6,rnd(.022,.03)],[rnd(1600,1850)*s,.3,rnd(.01,.014)],[rnd(2600,3000)*s,.12,rnd(.005,.007)]],
+      noise:.35,noiseTau:.0025,thump:bar?2.2:1.6,thumpTau:.022};}
+    case 'glass':{const f=rnd(2700,3300)*(bar?0.85:1); return {len:.45,
+      modes:[[f,1,rnd(.09,.12)],[f*2.32,.45,rnd(.05,.07)],[f*4.11,.2,rnd(.025,.035)],[f*1.003,.5,rnd(.09,.12)]],
+      noise:.35,noiseTau:.0008,thump:.25,thumpTau:.003};}
+    case 'metal':{const f=rnd(1700,2100)*(bar?0.85:1); return {len:.5,
+      modes:[[f,1,rnd(.11,.14)],[f*1.006,.6,rnd(.11,.14)],[f*1.48,.7,rnd(.08,.1)],[f*2.21,.5,rnd(.06,.08)],[f*3.03,.35,rnd(.04,.05)],[f*4.17,.2,rnd(.02,.03)]],
+      noise:.5,noiseTau:.001,thump:.4,thumpTau:.004};}
+    case 'cute':{const f=rnd(480,560)*(bar?0.8:1); return {len:.13,
+      modes:[[f,1,.035]],sweep:[f,f*rnd(2.3,2.7),.025],noise:.05,noiseTau:.0006,thump:0,thumpTau:.001};}
+  }
+}
+function makeClick(a,p,kind){
+  const c=profileFor(p,kind);
+  const sr=a.sampleRate, len=Math.floor(sr*c.len), buf=a.createBuffer(1,len,sr), d=buf.getChannelData(0);
+  const ph=c.modes.map(()=>Math.random()*Math.PI*2);
+  let prev=0, lp=0, swPhase=0;
+  for(let i=0;i<len;i++){
+    const t=i/sr; let s=0;
+    if(c.sweep){
+      const [f0,f1,tau]=c.sweep; const f=f1-(f1-f0)*Math.exp(-t/tau);
+      swPhase+=2*Math.PI*f/sr; s+=Math.sin(swPhase)*Math.exp(-t/c.modes[0][2]);
+    }else{
+      for(let m=0;m<c.modes.length;m++){const [f,amp,tau]=c.modes[m]; s+=amp*Math.sin(2*Math.PI*f*t+ph[m])*Math.exp(-t/tau);}
+    }
+    const n=Math.random()*2-1, hp=n-prev; prev=n;
+    s+=hp*c.noise*Math.exp(-t/c.noiseTau);
+    if(c.thump){ lp+=((Math.random()*2-1)*Math.exp(-t/c.thumpTau)-lp)*0.06; s+=lp*c.thump*3; }
+    const att=Math.min(1,t/(c.sweep?0.002:0.0003));
+    const tail=Math.min(1,(len-i)/(sr*0.01));
+    d[i]=s*att*tail;
+  }
+  let pk=0; for(let i=0;i<len;i++) pk=Math.max(pk,Math.abs(d[i]));
+  for(let i=0;i<len;i++) d[i]/=pk||1;
+  return buf;
+}
+function getBufs(p,kind){
+  const key=p+kind;
+  if(!bufs[key]){ bufs[key]=[]; for(let i=0;i<6;i++) bufs[key].push(makeClick(actx,p,kind)); }
+  return bufs[key];
+}
+const LOUD={wood:.8,plastic:.8,bigwood:.85,glass:.55,metal:.5,cute:.7};
+function clack(delay=0,strength=1,kind='bead'){
+  if(sound==='off') return; const a=audio(); if(!a) return;
+  const set=getBufs(sound,kind);
+  const src=a.createBufferSource(); src.buffer=set[(Math.random()*set.length)|0];
+  src.playbackRate.value=0.95+Math.random()*0.1;
+  const g=a.createGain(); g.gain.value=LOUD[sound]*strength;
+  src.connect(g).connect(master); src.start(a.currentTime+Math.max(0,delay));
+}
+function impactSound(moved,toBar){
+  const d=DUR/1000;
+  clack(d,1,toBar?'bar':'bead');
+  for(let i=1;i<Math.min(moved,4);i++) clack(d+i*0.007+Math.random()*0.004,0.45,'bead');
+}
+function tone(freqs,step,dur,gain,type='sine'){
+  if(sound==='off') return; const a=audio(); if(!a) return;
+  freqs.forEach((f,i)=>{
+    const t0=a.currentTime+i*step, o=a.createOscillator(), g=a.createGain();
+    o.type=type; o.frequency.value=f;
+    g.gain.setValueAtTime(0.0001,t0); g.gain.exponentialRampToValueAtTime(gain,t0+0.01); g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);
+    o.connect(g).connect(master); o.start(t0); o.stop(t0+dur+0.02);
+  });
+}
+const chimeOk=()=>tone([1046.5,1318.5,1568],0.09,0.35,0.18);
+const chimeBad=()=>tone([330,262],0.12,0.25,0.12,'triangle');
+
+/* ================= 숫자 읽기 (언어별) ================= */
+function readKo(n){
+  if(n===0n) return '영';
+  const D=['','일','이','삼','사','오','육','칠','팔','구'], U=['','만','억','조','경'], S=['','십','백','천'];
+  let s='', i=0;
+  while(n>0n){
+    let ch=Number(n%10000n); n/=10000n;
+    if(ch){ const only1=ch===1&&i===1; let c=''; for(let p=0;p<4;p++){const dg=ch%10; ch=Math.floor(ch/10); if(dg) c=(dg===1&&p>0?'':D[dg])+S[p]+c;} s=(only1?'':c)+U[i]+' '+s; }
+    i++;
+  }
+  return s.trim();
+}
+function readJa(n){
+  if(n===0n) return '零';
+  const D=['','一','二','三','四','五','六','七','八','九'], U=['','万','億','兆','京'], S=['','十','百','千'];
+  let s='', i=0;
+  while(n>0n){
+    let ch=Number(n%10000n); n/=10000n;
+    if(ch){ let c=''; for(let p=0;p<4;p++){const dg=ch%10; ch=Math.floor(ch/10); if(dg) c=(dg===1&&p>0&&!(p===3&&i>0)?'':D[dg])+S[p]+c;} s=c+U[i]+s; }
+    i++;
+  }
+  return s;
+}
+function readZh(n){
+  if(n===0n) return '零';
+  const D=['零','一','二','三','四','五','六','七','八','九'], U=['','万','亿','万亿','亿亿'], S=['','十','百','千'];
+  const chunks=[]; while(n>0n){chunks.push(Number(n%10000n)); n/=10000n;}
+  let out='', needZero=false;
+  for(let i=chunks.length-1;i>=0;i--){
+    const ch=chunks[i];
+    if(ch===0){ needZero=out!==''; continue; }
+    if(out!==''&&(ch<1000||needZero)) out+='零';
+    needZero=false;
+    const ds=[Math.floor(ch/1000)%10,Math.floor(ch/100)%10,Math.floor(ch/10)%10,ch%10];
+    let c='', zero=false, started=false;
+    for(let j=0;j<4;j++){
+      const dg=ds[j], p=3-j;
+      if(dg===0){ if(started) zero=true; continue; }
+      if(zero){ c+='零'; zero=false; }
+      c+=(dg===1&&p===1&&!started&&out==='')?'十':D[dg]+S[p];
+      started=true;
+    }
+    out+=c+U[i];
+  }
+  return out;
+}
+function readEn(n){
+  if(n===0n) return 'zero';
+  const ones=['','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+  const tens=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+  const U=['','thousand','million','billion','trillion','quadrillion'];
+  const three=x=>{let s=[]; const h=Math.floor(x/100), r=x%100;
+    if(h) s.push(ones[h]+' hundred');
+    if(r){ s.push(r<20?ones[r]:tens[Math.floor(r/10)]+(r%10?'-'+ones[r%10]:'')); }
+    return s.join(' ');};
+  const parts=[]; let i=0;
+  while(n>0n){const c=Number(n%1000n); n/=1000n; if(c) parts.unshift(three(c)+(U[i]?' '+U[i]:'')); i++;}
+  return parts.join(' ');
+}
+const READ={ko:readKo,ja:readJa,zh:readZh,en:readEn};
+
+/* ================= 값 표시 ================= */
+let mode='calc', peek=false;
+function currentValue(){ let str=''; for(let r=0;r<RODS;r++) str+=(heaven[r]?5:0)+earth[r]; return BigInt(str); }
+function update(){
+  const v=currentValue();
+  if(mode==='practice'&&!peek){ valueEl.textContent='?'; wordsEl.textContent=T('hidden'); return; }
+  valueEl.textContent=v.toLocaleString(LOCALE[lang]);
+  wordsEl.textContent=READ[lang](v);
+}
+
+/* ================= 주판 조작 ================= */
+const ray=new THREE.Raycaster(), ndc=new THREE.Vector2();
+function hitAt(cx,cy){
+  const p=toApp(cx,cy);
+  const x=p.x-stage.offsetLeft, y=p.y-stage.offsetTop;
+  ndc.set(x/stage.clientWidth*2-1, -(y/stage.clientHeight)*2+1);
+  ray.setFromCamera(ndc,camera);
+  const hit=ray.intersectObjects(pickables,false)[0];
+  return hit?{...hit.object.userData,y:p.y}:null;
+}
+function apply(t,dir){
+  let moved=0, toBar=false;
+  if(t.type==='h'){
+    const on = dir==='tap'? !heaven[t.r] : dir==='down';
+    if(heaven[t.r]!==on){ heaven[t.r]=on; moved=1; toBar=on; }
+  }else{
+    const active=t.k<earth[t.r];
+    const on = dir==='tap'? !active : dir==='up';
+    const count= on? Math.max(earth[t.r],t.k+1) : Math.min(earth[t.r],t.k);
+    moved=Math.abs(earth[t.r]-count); toBar=count>earth[t.r]; earth[t.r]=count;
+  }
+  if(moved){ syncTargets(t.r); impactSound(moved,toBar); update(); animate(); clearFeedback(); }
+}
+let start=null;
+cv.addEventListener('pointerdown',e=>{
+  audio();
+  const t=hitAt(e.clientX,e.clientY); if(!t) return;
+  start={t,y:t.y,done:false}; try{cv.setPointerCapture(e.pointerId);}catch(_){}
+});
+cv.addEventListener('pointermove',e=>{
+  if(!start||start.done) return;
+  const dy=toApp(e.clientX,e.clientY).y-start.y;
+  if(Math.abs(dy)>8){ apply(start.t,dy<0?'up':'down'); start.done=true; }
+});
+cv.addEventListener('pointerup',()=>{ if(start&&!start.done) apply(start.t,'tap'); start=null; });
+cv.addEventListener('pointercancel',()=>{start=null;});
+
+function setValue(v,withSound){
+  const s=v.toString().padStart(RODS,'0').slice(-RODS); let n=0;
+  for(let r=0;r<RODS;r++){
+    const d=+s[r], h=d>=5, e=d%5;
+    if(heaven[r]!==h||earth[r]!==e){ heaven[r]=h; earth[r]=e; syncTargets(r);
+      if(withSound){ clack(DUR/1000+n*0.013+Math.random()*0.01,0.5+Math.random()*0.4,Math.random()<.3?'bar':'bead'); n++; } }
+  }
+  update(); animate();
+}
+$('clear').addEventListener('click',()=>{ audio(); setValue(0n,true); clearFeedback(); });
+
+/* ================= 연습 모드 ================= */
+const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const GEN=[
+  ()=>{const a=ri(1,9),b=ri(1,9); return {terms:[a,'+',b],ans:a+b};},
+  ()=>{const a=ri(1,9),b=ri(1,9); return Math.random()<.5||a<b?{terms:[a,'+',b],ans:a+b}:{terms:[a,'−',b],ans:a-b};},
+  ()=>{const a=ri(10,99),b=ri(10,99); return {terms:[a,'+',b],ans:a+b};},
+  ()=>three(10,99),
+  ()=>three(100,999),
+  ()=>{const a=ri(12,99),b=ri(2,9); return {terms:[a,'×',b],ans:a*b};}
+];
+function three(lo,hi){
+  const a=ri(lo,hi), b=ri(lo,hi); let s1=Math.random()<.6?'+':'−'; let v1=s1==='+'?a+b:a-b;
+  if(v1<0){ s1='+'; v1=a+b; }
+  const c=ri(lo,hi); let s2=Math.random()<.5?'+':'−'; let v2=s2==='+'?v1+c:v1-c;
+  if(v2<0){ s2='+'; v2=v1+c; }
+  return {terms:[a,s1,b,s2,c],ans:v2};
+}
+let level=+(store.get('jupan.level')||0); if(!(level>=0&&level<GEN.length)) level=0;
+let prob=null, solved=0, tried=0, counted=false, nextTimer=0;
+const probEl=$('problem'), fbEl=$('feedback'), scoreEl=$('score');
+function drawProblem(){
+  if(!prob){ probEl.textContent=''; return; }
+  const loc=LOCALE[lang];
+  probEl.innerHTML=prob.terms.map(x=>typeof x==='number'?x.toLocaleString(loc):` ${x} `).join('')+' = <span class="q">?</span>';
+}
+function drawScore(){ scoreEl.textContent=fmt(T('score'),{c:solved,t:tried}); }
+function clearFeedback(){ if(fbEl.dataset.state==='bad'){ fbEl.textContent=''; fbEl.className='feedback'; fbEl.dataset.state=''; } }
+function setFeedback(kind,text){ fbEl.textContent=text; fbEl.className='feedback '+kind; fbEl.dataset.state=kind;
+  if(kind==='bad'){ fbEl.classList.remove('shake'); void fbEl.offsetWidth; fbEl.classList.add('shake'); } }
+function newProblem(){
+  clearTimeout(nextTimer);
+  prob=GEN[level](); counted=false;
+  fbEl.textContent=''; fbEl.className='feedback'; fbEl.dataset.state='';
+  drawProblem(); setValue(0n,currentValue()!==0n);
+}
+$('check').addEventListener('click',()=>{
+  if(!prob) return; audio();
+  const ok=currentValue()===BigInt(prob.ans);
+  if(!counted){ tried++; if(ok) solved++; counted=true; }
+  drawScore();
+  if(ok){ setFeedback('ok',T('ok')); chimeOk(); probEl.innerHTML=probEl.innerHTML.replace('<span class="q">?</span>',`<span class="q">${prob.ans.toLocaleString(LOCALE[lang])}</span>`);
+    nextTimer=setTimeout(newProblem,1400); }
+  else { setFeedback('bad',T('bad')); chimeBad(); }
+});
+// 틀린 뒤 다시 맞히면 '맞힘'에 넣지 않음: 첫 채점만 점수에 반영
+$('reveal').addEventListener('click',()=>{
+  if(!prob) return; audio();
+  if(!counted){ tried++; counted=true; drawScore(); }
+  setFeedback('reveal',fmt(T('answerIs'),{n:prob.ans.toLocaleString(LOCALE[lang])}));
+  setValue(BigInt(prob.ans),true);
+});
+$('next').addEventListener('click',()=>{ audio(); newProblem(); });
+$('peek').addEventListener('click',()=>{ peek=!peek; $('peek').setAttribute('aria-pressed',peek); $('peek').textContent=T(peek?'peekHide':'peek'); update(); });
+const levelSel=$('level');
+levelSel.addEventListener('change',()=>{ level=+levelSel.value; store.set('jupan.level',level); solved=0; tried=0; drawScore(); newProblem(); });
+
+function setMode(m){
+  if(m===mode) return; mode=m;
+  $('mode-calc').setAttribute('aria-pressed',m==='calc'); $('mode-practice').setAttribute('aria-pressed',m==='practice');
+  $('practicebar').hidden=m!=='practice';
+  if(m==='practice'){ peek=false; $('peek').setAttribute('aria-pressed','false'); $('peek').textContent=T('peek'); drawScore(); newProblem(); }
+  else { clearTimeout(nextTimer); prob=null; update(); }
+  requestAnimationFrame(resize);
+}
+$('mode-calc').addEventListener('click',()=>setMode('calc'));
+$('mode-practice').addEventListener('click',()=>{ audio(); setMode('practice'); });
+
+/* ================= 소리·언어 선택 ================= */
+const soundSel=$('sound'), langSel=$('lang');
+soundSel.addEventListener('change',()=>{ sound=soundSel.value; store.set('jupan.sound',sound); if(sound!=='off'){ audio(); clack(0.02); } });
+langSel.addEventListener('change',()=>{ setLang(langSel.value); });
+function setLang(l){
+  lang=l; store.set('jupan.lang',l);
+  document.documentElement.lang=l==='zh'?'zh-CN':l;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ const v=T(el.dataset.i18n); if(typeof v==='string') el.textContent=v; });
+  document.querySelectorAll('[data-i18n-aria]').forEach(el=>el.setAttribute('aria-label',T(el.dataset.i18nAria)));
+  soundSel.innerHTML=SOUNDS.map(s=>`<option value="${s}">${T('snd')[s]}</option>`).join(''); soundSel.value=sound;
+  levelSel.innerHTML=T('levels').map((t,i)=>`<option value="${i}">${t}</option>`).join(''); levelSel.value=level;
+  langSel.value=l;
+  $('guide').hidden=l!=='ko';
+  $('peek').textContent=T(peek?'peekHide':'peek');
+  drawProblem(); drawScore(); update();
+  if(fbEl.dataset.state==='ok') fbEl.textContent=T('ok');
+  else if(fbEl.dataset.state==='bad') fbEl.textContent=T('bad');
+  else if(fbEl.dataset.state==='reveal'&&prob) fbEl.textContent=fmt(T('answerIs'),{n:prob.ans.toLocaleString(LOCALE[lang])});
+  requestAnimationFrame(resize);
+}
+
+// 예시: 첫 화면에 1,234,567을 놓아 둠
+[1,2,3,4,5,6,7].forEach((d,i)=>{const r=RODS-7+i; heaven[r]=d>=5; earth[r]=d%5; hPos[r]=heaven[r]?1:0; for(let k=0;k<4;k++)ePos[r][k]=k<earth[r]?1:0;});
+
+addEventListener('resize',resize);
+addEventListener('orientationchange',()=>setTimeout(resize,200));
+new ResizeObserver(resize).observe(document.body);
+$('loading').hidden=true;
+setLang(lang);
+resize();
+})();
+</script>
+
+</body>
+</html>
